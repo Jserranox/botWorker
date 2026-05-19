@@ -19,8 +19,7 @@
     "paths": {
       "@libs/database": ["libs/database/src/index.ts"],
       "@libs/database/*": ["libs/database/src/*"],
-      "@libs/queue": ["libs/queue/src/index.ts"],
-      "@libs/queue/*": ["libs/queue/src/*"],
+
       "@libs/types": ["libs/types/src/index.ts"],
       "@libs/types/*": ["libs/types/src/*"],
       "@libs/logger": ["libs/logger/src/index.ts"],

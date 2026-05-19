@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prebuild": "pnpm --filter @aero-agent/queue build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -71,8 +72,7 @@
     "moduleNameMapper": {
       "@libs/database/(.*)": "<rootDir>/../../libs/database/src/$1",
       "@libs/database": "<rootDir>/../../libs/database/src/index.ts",
-      "@libs/queue/(.*)": "<rootDir>/../../libs/queue/src/$1",
-      "@libs/queue": "<rootDir>/../../libs/queue/src/index.ts",
+      "@aero-agent/queue": "<rootDir>/../../libs/queue/src/index.ts",
       "@libs/types/(.*)": "<rootDir>/../../libs/types/src/$1",
       "@libs/types": "<rootDir>/../../libs/types/src/index.ts",
       "@libs/logger/(.*)": "<rootDir>/../../libs/logger/src/$1",

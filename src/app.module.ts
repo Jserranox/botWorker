@@ -14,7 +14,7 @@ import {
   AnalyticsEvent,
   Webhook,
 } from '@libs/database';
-import { QueueModule, QueueName } from '@libs/queue';
+import { QueueModule, QueueName } from '@aero-agent/queue';
 import { KnowledgeModule } from '@botBackEnd/modules/knowledge/knowledge.module';
 import { RagModule } from '@botBackEnd/modules/rag/rag.module';
 import { AppController } from './app.controller';

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Job } from 'bullmq';
 import { DocumentChunk, DocumentStatus } from '@libs/database';
-import { QueueName, JobName, IngestDocumentJob, IngestUrlJob } from '@libs/queue';
+import { QueueName, JobName, IngestDocumentJob, IngestUrlJob } from '@aero-agent/queue';
 import { DocumentsService } from '@botBackEnd/modules/knowledge/services/documents.service';
 import { ExtractionService } from '@botBackEnd/modules/knowledge/services/extraction.service';
 import { StorageService } from '@botBackEnd/modules/knowledge/services/storage.service';
