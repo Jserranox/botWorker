@@ -17,9 +17,11 @@ import {
 import { QueueModule, QueueName } from '@aero-agent/queue';
 import { KnowledgeModule } from '@botBackEnd/modules/knowledge/knowledge.module';
 import { RagModule } from '@botBackEnd/modules/rag/rag.module';
+import { WebhooksModule } from '@botBackEnd/modules/webhooks/webhooks.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DocumentIngestionProcessor } from './processors/document-ingestion.processor';
+import { WebhookDeliveryProcessor } from './processors/webhook-delivery.processor';
 
 @Module({
   imports: [
@@ -48,11 +50,15 @@ import { DocumentIngestionProcessor } from './processors/document-ingestion.proc
     }),
     TypeOrmModule.forFeature([KnowledgeDocument, DocumentChunk]),
     QueueModule.forRoot(),
-    BullModule.registerQueue({ name: QueueName.INGESTION }),
+    BullModule.registerQueue(
+      { name: QueueName.INGESTION },
+      { name: QueueName.WEBHOOKS },
+    ),
     KnowledgeModule,
     RagModule,
+    WebhooksModule,
   ],
   controllers: [AppController],
-  providers: [AppService, DocumentIngestionProcessor],
+  providers: [AppService, DocumentIngestionProcessor, WebhookDeliveryProcessor],
 })
 export class AppModule {}
