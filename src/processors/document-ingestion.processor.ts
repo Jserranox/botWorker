@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Job } from 'bullmq';
 import { DocumentChunk, DocumentStatus } from '@libs/database';
-import { QueueName, JobName, IngestDocumentJob, IngestUrlJob } from '@aero-agent/queue';
+import {
+  QueueName,
+  JobName,
+  IngestDocumentJob,
+  IngestUrlJob,
+} from '@aero-agent/queue';
 import { DocumentsService } from '@botBackEnd/modules/knowledge/services/documents.service';
 import { ExtractionService } from '@botBackEnd/modules/knowledge/services/extraction.service';
 import { StorageService } from '@botBackEnd/modules/knowledge/services/storage.service';
@@ -35,12 +40,18 @@ export class DocumentIngestionProcessor extends WorkerHost {
 
   private async handleDocument(job: Job<IngestDocumentJob>): Promise<void> {
     const { documentId, botId } = job.data;
-    await this.documentsService.updateStatus(documentId, DocumentStatus.PROCESSING);
+    await this.documentsService.updateStatus(
+      documentId,
+      DocumentStatus.PROCESSING,
+    );
 
     try {
       const doc = await this.documentsService.findOneRaw(documentId);
       const buffer = await this.storageService.download(doc.storageKey);
-      const text = await this.extractionService.extractText(buffer, doc.fileType);
+      const text = await this.extractionService.extractText(
+        buffer,
+        doc.fileType,
+      );
 
       await this.chunkRepo.delete({ documentId });
 
@@ -62,8 +73,13 @@ export class DocumentIngestionProcessor extends WorkerHost {
         await this.chunkRepo.save(batch);
       }
 
-      await this.documentsService.update(documentId, { chunkCount: rawChunks.length });
-      await this.documentsService.updateStatus(documentId, DocumentStatus.READY);
+      await this.documentsService.update(documentId, {
+        chunkCount: rawChunks.length,
+      });
+      await this.documentsService.updateStatus(
+        documentId,
+        DocumentStatus.READY,
+      );
     } catch (err) {
       await this.documentsService.updateStatus(
         documentId,
@@ -76,7 +92,10 @@ export class DocumentIngestionProcessor extends WorkerHost {
 
   private async handleUrl(job: Job<IngestUrlJob>): Promise<void> {
     const { documentId, botId, url } = job.data;
-    await this.documentsService.updateStatus(documentId, DocumentStatus.PROCESSING);
+    await this.documentsService.updateStatus(
+      documentId,
+      DocumentStatus.PROCESSING,
+    );
 
     try {
       const text = await this.extractionService.extractFromUrl(url);
@@ -101,8 +120,13 @@ export class DocumentIngestionProcessor extends WorkerHost {
         await this.chunkRepo.save(batch);
       }
 
-      await this.documentsService.update(documentId, { chunkCount: rawChunks.length });
-      await this.documentsService.updateStatus(documentId, DocumentStatus.READY);
+      await this.documentsService.update(documentId, {
+        chunkCount: rawChunks.length,
+      });
+      await this.documentsService.updateStatus(
+        documentId,
+        DocumentStatus.READY,
+      );
     } catch (err) {
       await this.documentsService.updateStatus(
         documentId,
